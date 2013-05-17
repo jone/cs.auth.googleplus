@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<layers>
+    <layer name="cs.auth.googleplus"
+        interface="cs.auth.googleplus.interfaces.IGooglePlusLoginLayer" />
+</layers>

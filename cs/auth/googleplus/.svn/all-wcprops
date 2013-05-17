@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/private/!svn/ver/68311/deusto-plone/cs.auth.googleplus/trunk/cs/auth/googleplus
+END
+interfaces.py
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/private/!svn/ver/68374/deusto-plone/cs.auth.googleplus/trunk/cs/auth/googleplus/interfaces.py
+END
+addform.pt
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/private/!svn/ver/68374/deusto-plone/cs.auth.googleplus/trunk/cs/auth/googleplus/addform.pt
+END
+rebuilt_i18n.sh
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/private/!svn/ver/67864/deusto-plone/cs.auth.googleplus/trunk/cs/auth/googleplus/rebuilt_i18n.sh
+END
+login.py
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/private/!svn/ver/68374/deusto-plone/cs.auth.googleplus/trunk/cs/auth/googleplus/login.py
+END
+plugin.py
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/private/!svn/ver/68374/deusto-plone/cs.auth.googleplus/trunk/cs/auth/googleplus/plugin.py
+END
+user.py
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/private/!svn/ver/67864/deusto-plone/cs.auth.googleplus/trunk/cs/auth/googleplus/user.py
+END
+configure.zcml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/private/!svn/ver/67871/deusto-plone/cs.auth.googleplus/trunk/cs/auth/googleplus/configure.zcml
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/private/!svn/ver/68374/deusto-plone/cs.auth.googleplus/trunk/cs/auth/googleplus/__init__.py
+END
+controlpanel.py
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/private/!svn/ver/68374/deusto-plone/cs.auth.googleplus/trunk/cs/auth/googleplus/controlpanel.py
+END
+setuphandlers.py
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/private/!svn/ver/68311/deusto-plone/cs.auth.googleplus/trunk/cs/auth/googleplus/setuphandlers.py
+END
