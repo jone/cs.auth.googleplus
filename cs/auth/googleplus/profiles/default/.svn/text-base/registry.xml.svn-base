@@ -1,3 +1,0 @@
-<registry>
-    <records interface="cs.auth.googleplus.controlpanel.IGooglePlusLoginSettings" />
-</registry>
