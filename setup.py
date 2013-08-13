@@ -24,6 +24,7 @@ setup(name='cs.auth.googleplus',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
+          'collective.beaker',
           'setuptools',
           # -*- Extra requirements: -*-
       ],
