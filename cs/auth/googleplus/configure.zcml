@@ -13,7 +13,7 @@
     <!-- Required packages -->
     <include package="collective.beaker" />
     <include package="five.globalrequest" />
-    
+
 
     <genericsetup:registerProfile
         name="default"
@@ -30,25 +30,25 @@
         handler="cs.auth.googleplus.setuphandlers.importVarious">
         <depends name="rolemap"/>
     </genericsetup:importStep>
-    
+
     <five:registerClass
         class=".plugin.CSGooglePlusUsers"
         meta_type="CSGooglePlusUsers"
         permission="zope2.ViewManagementScreens"
         addview="cs-add-googleplus-users-plugin"
         />
-    
+
     <pas:registerMultiPlugin
         meta_type="CSGooglePlusUsers"
         />
-    
+
     <browser:page
         name="cs-add-googleplus-users-plugin"
         for="zope.browser.interfaces.IAdding"
         class=".plugin.AddForm"
         permission="zope2.ViewManagementScreens"
         />
-    
+
     <browser:page
         name="googleplus-login"
         for="Products.CMFCore.interfaces.ISiteRoot"
@@ -62,8 +62,8 @@
         permission="cmf.ManagePortal"
         class=".controlpanel.GooglePlusloginControlPanelView"
     />
-      
+
   <!-- -*- extra stuff goes here -*- -->
-  
+
 
 </configure>
