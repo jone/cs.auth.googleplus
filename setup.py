@@ -6,7 +6,7 @@ version = '1.0'
 setup(name='cs.auth.googleplus',
       version=version,
       description="Plone package to provide Google+ authentication",
-      long_description=open("README.txt").read() + "\n" +
+      long_description=open("README.md").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from
       # http://pypi.python.org/pypi?:action=list_classifiers
@@ -14,10 +14,10 @@ setup(name='cs.auth.googleplus',
         "Framework :: Plone",
         "Programming Language :: Python",
         ],
-      keywords='',
+      keywords='plone pas login google googleplus',
       author='',
       author_email='',
-      url='http://svn.plone.org/svn/collective/',
+      url='https://github.com/basmaijak/cs.auth.googleplus',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['cs', 'cs.auth'],
