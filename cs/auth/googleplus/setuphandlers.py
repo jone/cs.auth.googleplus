@@ -4,6 +4,7 @@ from Products.PlonePAS.Extensions.Install import activatePluginInterfaces
 
 from cs.auth.googleplus.plugin import CSGooglePlusUsers
 
+
 def installPASPlugin(portal, name='cs-googleplus-users'):
 
     out = StringIO()
@@ -29,6 +30,7 @@ def installPASPlugin(portal, name='cs-googleplus-users'):
                     plugins._plugins[interface] = tuple(active)
 
         return out.getvalue()
+
 
 def importVarious(context):
     """Miscellanous steps import handle
