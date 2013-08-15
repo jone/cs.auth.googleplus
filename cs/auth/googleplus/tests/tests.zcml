@@ -1,0 +1,27 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <browser:page
+        name="auth"
+        for="*"
+        class=".mockgoogleplus.Auth"
+        permission="zope2.View"
+        />
+
+    <browser:page
+        name="token"
+        for="*"
+        class=".mockgoogleplus.Token"
+        permission="zope2.View"
+        />
+
+    <browser:page
+        name="profile"
+        for="*"
+        class=".mockgoogleplus.Profile"
+        permission="zope2.View"
+        />
+
+
+</configure>

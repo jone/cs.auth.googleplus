@@ -5,7 +5,6 @@ version = '1.0'
 
 tests_require = [
     'plone.app.testing',
-    'apiclient',
     ]
 
 setup(name='cs.auth.googleplus',
