@@ -85,6 +85,20 @@ class TestGoogleLogin(TestCase):
 
         self.assertEquals(1, len(mtool.listMembers()), 'Expect one entry')
 
+    def test_properties_for_user(self):
+        self.login_user()
+        mtool = self.portal.portal_membership
+        member = mtool.getMemberById(DUMMY_USER_PROFILE['id'])
+
+        self.assertEquals(member.getProperty('fullname'),
+                          DUMMY_USER_PROFILE['name'])
+
+        self.assertEquals(member.getProperty('username'),
+                          DUMMY_USER_PROFILE['name'])
+
+        self.assertEquals(member.getProperty('email'),
+                          DUMMY_USER_PROFILE['email'])
+
     def tearDown(self):
         gplogin.GOOGLEPLUS_AUTH_URL = ORIG_AUTH
         gplogin.GOOGLEPLUS_ACCESS_TOKEN_URL = ORIG_TOKEN
