@@ -7,7 +7,7 @@ from App.config import getConfiguration
 
 
 DUMMY_USER_PROFILE = {'id': 'profileid',
-                      'name': 'SomeName',
+                      'name': 'Name with \xc3\x9cmlauts',
                       'email': 'somename@email.com',
                       'picture': 'http://someurl....jpeg'}
 
