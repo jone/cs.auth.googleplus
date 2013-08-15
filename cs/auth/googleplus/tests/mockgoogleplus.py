@@ -1,3 +1,4 @@
+from cs.auth.googleplus.testing import DUMMY_USER_PROFILE
 from zope.publisher.browser import BrowserView
 import json
 
@@ -57,8 +58,5 @@ class Profile(BrowserView):
         {'access_token': 'some-access-token'}
         """
         self.request.response.setHeader("Content-type", "application/json")
-        return json.dumps({'id': 'profileid',
-                           'name': 'Some Name',
-                           'email': 'somename@email.com',
-                           'picture': 'http://someurl....jpeg'})
+        return json.dumps(DUMMY_USER_PROFILE)
 
