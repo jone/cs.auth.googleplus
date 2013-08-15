@@ -17,6 +17,22 @@ ORIG_TOKEN = gplogin.GOOGLEPLUS_ACCESS_TOKEN_URL
 ORIG_PROFILE = gplogin.GOOGLEPLUS_PROFILE_URL
 
 
+def prepare_google_plus_config_for_tests():
+    gplogin.GOOGLEPLUS_AUTH_URL = 'http://localhost:55001/plone/auth'
+    gplogin.GOOGLEPLUS_ACCESS_TOKEN_URL = 'http://localhost:55001/plone/token'
+    gplogin.GOOGLEPLUS_PROFILE_URL = 'http://localhost:55001/plone/profile'
+
+    registry = getUtility(IRegistry)
+    proxy = registry.forInterface(IGooglePlusLoginSettings)
+    proxy.googleplus_client_id = u'dummy_id'
+    proxy.googleplus_client_secret = u'dummy_secret'
+
+
+def reset_google_plus_config():
+    gplogin.GOOGLEPLUS_AUTH_URL = ORIG_AUTH
+    gplogin.GOOGLEPLUS_ACCESS_TOKEN_URL = ORIG_TOKEN
+    gplogin.GOOGLEPLUS_PROFILE_URL = ORIG_PROFILE
+
 class TestGoogleLogin(TestCase):
 
     layer = GOOGLEPLUS_AUTH_FUNCTIONAL_TESTING
@@ -30,15 +46,7 @@ class TestGoogleLogin(TestCase):
         self.browser = Browser(self.layer['app'])
         self.browser.handleErrors = False
 
-        gplogin.GOOGLEPLUS_AUTH_URL = 'http://localhost:55001/plone/auth'
-        gplogin.GOOGLEPLUS_ACCESS_TOKEN_URL = 'http://localhost:55001/plone/token'
-        gplogin.GOOGLEPLUS_PROFILE_URL = 'http://localhost:55001/plone/profile'
-
-        registry = getUtility(IRegistry)
-        proxy = registry.forInterface(IGooglePlusLoginSettings)
-        proxy.googleplus_client_id = u'dummy_id'
-        proxy.googleplus_client_secret = u'dummy_secret'
-
+        prepare_google_plus_config_for_tests()
         transaction.commit()
 
     def login_user(self):
@@ -100,6 +108,4 @@ class TestGoogleLogin(TestCase):
                           DUMMY_USER_PROFILE['email'])
 
     def tearDown(self):
-        gplogin.GOOGLEPLUS_AUTH_URL = ORIG_AUTH
-        gplogin.GOOGLEPLUS_ACCESS_TOKEN_URL = ORIG_TOKEN
-        gplogin.GOOGLEPLUS_PROFILE_URL = ORIG_PROFILE
+        reset_google_plus_config()
