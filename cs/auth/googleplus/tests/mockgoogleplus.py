@@ -13,20 +13,24 @@ class Auth(BrowserView):
         'response_type': 'code',
         'client_id': 'some-cliend-id'}
         """
-        # data = {'code': 'some-token',
-        #         'state': 'profile'}
-        # requests.post(self.request.get('redirect_uri'), data)
 
         return """
 <html>
 <body>
-<form action="%s">
+<form action="%(url)s">
     <input type="hidden" name="code" value="some-token" />
     <input type="hidden" name="state" value="profile" />
     <input type="submit" name="accept" value="accept" />
+</form>
+<form action="%(url)s">
+    <input type="hidden" name="error" value="some-error" />
+    <input type="hidden" name="error_reason" value="some error reason" />
+    <input type="submit" name="cancel" value="cancel" />
+</form>
+
 </body>
 </html>
-""" % self.request.get('redirect_uri')
+""" % {'url': self.request.get('redirect_uri')}
 
 
 class Token(BrowserView):

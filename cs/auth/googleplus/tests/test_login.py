@@ -55,6 +55,14 @@ class TestGoogleLogin(TestCase):
         self.assertEquals('%s/logged_in' % self.portal_url, self.browser.url,
             'Should be on logged_in page')
 
+    def test_cancel_logging_in(self):
+        self.browser.open('%s/googleplus-login' % self.portal_url)
+        self.browser.getControl(name='cancel').click()
+
+        self.assertIn('GOOGLEPLUS authentication denied',
+                       self.browser.contents,
+                       'The StatusMessage was not found')
+
     def tearDown(self):
         gplogin.GOOGLEPLUS_AUTH_URL = ORIG_AUTH
         gplogin.GOOGLEPLUS_ACCESS_TOKEN_URL = ORIG_TOKEN
