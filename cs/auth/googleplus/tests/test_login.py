@@ -1,7 +1,9 @@
 from cs.auth.googleplus import login as gplogin
+from cs.auth.googleplus.controlpanel import IGooglePlusLoginSettings
 from cs.auth.googleplus.testing import DUMMY_USER_PROFILE
 from cs.auth.googleplus.testing import GOOGLEPLUS_AUTH_FUNCTIONAL_TESTING
 from plone.app.testing import login
+from plone.app.testing import PLONE_SITE_ID
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
@@ -9,8 +11,9 @@ from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from unittest2 import TestCase
 from zope.component import getUtility
-from cs.auth.googleplus.controlpanel import IGooglePlusLoginSettings
 import transaction
+import os
+
 
 ORIG_AUTH = gplogin.GOOGLEPLUS_AUTH_URL
 ORIG_TOKEN = gplogin.GOOGLEPLUS_ACCESS_TOKEN_URL
@@ -18,20 +21,20 @@ ORIG_PROFILE = gplogin.GOOGLEPLUS_PROFILE_URL
 
 
 def prepare_google_plus_config_for_tests():
-    gplogin.GOOGLEPLUS_AUTH_URL = 'http://localhost:55001/plone/auth'
-    gplogin.GOOGLEPLUS_ACCESS_TOKEN_URL = 'http://localhost:55001/plone/token'
-    gplogin.GOOGLEPLUS_PROFILE_URL = 'http://localhost:55001/plone/profile'
+    host = os.environ.get('ZSERVER_HOST', 'localhost')
+    port = int(os.environ.get('PLONE_TESTING_PORT',
+                                  os.environ.get('ZSERVER_PORT', 55001)))
+
+    portal_url = 'http://%s:%s/%s' % (host, port, PLONE_SITE_ID)
+    gplogin.GOOGLEPLUS_AUTH_URL = '%s/auth' % portal_url
+    gplogin.GOOGLEPLUS_ACCESS_TOKEN_URL = '%s/token' % portal_url
+    gplogin.GOOGLEPLUS_PROFILE_URL = '%s/profile' % portal_url
 
     registry = getUtility(IRegistry)
     proxy = registry.forInterface(IGooglePlusLoginSettings)
     proxy.googleplus_client_id = u'dummy_id'
     proxy.googleplus_client_secret = u'dummy_secret'
 
-
-def reset_google_plus_config():
-    gplogin.GOOGLEPLUS_AUTH_URL = ORIG_AUTH
-    gplogin.GOOGLEPLUS_ACCESS_TOKEN_URL = ORIG_TOKEN
-    gplogin.GOOGLEPLUS_PROFILE_URL = ORIG_PROFILE
 
 class TestGoogleLogin(TestCase):
 
@@ -106,6 +109,3 @@ class TestGoogleLogin(TestCase):
 
         self.assertEquals(member.getProperty('email'),
                           DUMMY_USER_PROFILE['email'])
-
-    def tearDown(self):
-        reset_google_plus_config()
