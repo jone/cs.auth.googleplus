@@ -1,16 +1,16 @@
-import json		
+import json
 import urlparse
 import urllib
 import hashlib
 import requests
 
-from zope.component import getUtility			
+from zope.component import getUtility
 from zope.publisher.browser import BrowserView
 
 from Products.PluggableAuthService.interfaces.plugins import IExtractionPlugin
 from Products.statusmessages.interfaces import IStatusMessage
 
-from plone.registry.interfaces import IRegistry		
+from plone.registry.interfaces import IRegistry
 from collective.beaker.interfaces import ISession
 
 from cs.auth.googleplus import GOOGLEPLUSMessageFactory as _
@@ -23,13 +23,13 @@ GOOGLEPLUS_ACCESS_TOKEN_URL = "https://accounts.google.com/o/oauth2/token"
 GOOGLEPLUS_AUTHENTICATION_SALT_KEY = 'cs.auth.googleplus.AUTHENTICATION_SALT_KEY'
 GOOGLEPLUS_PROFILE_URL= 'https://www.googleapis.com/oauth2/v1/userinfo'
 PERMISSIONS =    (r"https://www.googleapis.com/auth/userinfo.profile" +
-		       r" https://www.googleapis.com/auth/userinfo.email") 
+		       r" https://www.googleapis.com/auth/userinfo.email")
 RESPONSE='code'
 STATE= 'profile'
 GRANT='authorization_code'
 
 from logging import getLogger
-log = getLogger('cs.auth.googleplus') 
+log = getLogger('cs.auth.googleplus')
 
 class GooglePlusLogin(BrowserView):
     """This view implements the Google+ OAuth 2.0 login protocol.
@@ -40,17 +40,17 @@ authorize this as an application.
 Assuming that works, Google+ will redirect the user back to this same
 view, with a code in the request.
 """
-    
-    def __call__(self):		
+
+    def __call__(self):
         registry = getUtility(IRegistry)
         GOOGLEPLUS_CLIENT_ID = registry.get('cs.auth.googleplus.controlpanel.IGooglePlusLoginSettings.googleplus_client_id').encode()
         GOOGLEPLUS_CLIENT_SECRET = registry.get('cs.auth.googleplus.controlpanel.IGooglePlusLoginSettings.googleplus_client_secret').encode()
-	
+
 
         verificationCode = self.request.form.get("code", None)
 	error = self.request.form.get("error", None)
         errorReason = self.request.form.get("error_reason", None)
-	
+
 
         salt = hashlib.sha256().hexdigest()
         session = ISession(self.request)
@@ -63,7 +63,7 @@ view, with a code in the request.
 		'response_type': RESPONSE,
             }
 
-             
+
         # Did we get an error back after a Google+ redirect?
         if error is not None or errorReason is not None:
             log.info(error)
@@ -71,7 +71,7 @@ view, with a code in the request.
             IStatusMessage(self.request).add(_(u"GOOGLEPLUS authentication denied"), type="error")
             self.request.response.redirect(self.context.absolute_url())
             return u""
-        
+
         # Check if this the status is the same...
         return_salt = self.request.form.get('status', '')
 	if return_salt and return_salt != session.get(GOOGLEPLUS_AUTHENTICATION_SALT_KEY):
@@ -87,40 +87,40 @@ view, with a code in the request.
                     "%s?%s" % (GOOGLEPLUS_AUTH_URL, urllib.urlencode(args),)
                 )
             return u""
-        
+
 	# If we are on the return path form Google+,
         # exchange the return code for a token
-	
+
 	args = {
 		'code':verificationCode,
 		'client_id': GOOGLEPLUS_CLIENT_ID,
 		'client_secret': GOOGLEPLUS_CLIENT_SECRET,
 		'redirect_uri': "%s/%s" % (self.context.absolute_url(),self.__name__),
-                'grant_type': GRANT,		
-            }       
-        
+                'grant_type': GRANT,
+            }
+
 	response = requests.post(GOOGLEPLUS_ACCESS_TOKEN_URL,data=args)
-	
+
         #Load the profile using the access token we just received
         accessToken = response.json()["access_token"]
-        
+
         profile = json.load(urllib.urlopen(
                 "%s?%s" % (GOOGLEPLUS_PROFILE_URL, urllib.urlencode({'access_token': accessToken}),)
             ))
-       
+
 
         userId = profile.get('id')
         name = profile.get('name')
         email = profile.get('email', '')
         username = profile.get('name')
         profile_image = profile.get('picture')
-	
 
-        if not userId: 
+
+        if not userId:
             IStatusMessage(self.request).add(_(u"Insufficient information in GooglePlus profile"), type="error")
             self.request.response.redirect(self.context.absolute_url())
             return u
-        
+
         # Save the data in the session so that the extraction plugin can
         # authenticate the user to Plone
         session[SessionKeys.accessToken] = accessToken
@@ -130,7 +130,7 @@ view, with a code in the request.
         session[SessionKeys.email] = email
         session[SessionKeys.profile_image] = profile_image
         session.save()
-	
+
 
         # Add user data into our plugin storage:
         acl = self.context.acl_users
@@ -144,12 +144,12 @@ view, with a code in the request.
                 user_data['fullname'] = session[SessionKeys.fullname]
                 user_data['email'] = session[SessionKeys.email]
                 plugin._storage[session[SessionKeys.userId]] = user_data
-        
+
         IStatusMessage(self.request).add(_(u"Welcome. You are now logged in."), type="info")
-        
+
         return_args = ''
         if self.request.get('came_from', None) is not None:
             return_args = {'came_from': self.request.get('came_from')}
             return_args = '?' + urllib.urlencode(return_args)
-	
+
         self.request.response.redirect(self.context.absolute_url() + '/logged_in' + return_args)

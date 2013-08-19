@@ -6,7 +6,7 @@ version = '1.0'
 setup(name='cs.auth.googleplus',
       version=version,
       description="Plone package to provide Google+ authentication",
-      long_description=open("README.txt").read() + "\n" +
+      long_description=open("README.md").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from
       # http://pypi.python.org/pypi?:action=list_classifiers
@@ -24,6 +24,8 @@ setup(name='cs.auth.googleplus',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
+          'collective.beaker',
+          'requests',
           'setuptools',
           # -*- Extra requirements: -*-
       ],

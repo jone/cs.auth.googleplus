@@ -36,18 +36,18 @@ class SessionKeys:
 class AddForm(BrowserView):
     """Add form the PAS plugin
 """
-    
+
     def __call__(self):
         import pdb
         pdb.set_trace()
-        
+
         if 'form.button.Add' in self.request.form:
             name = self.request.form.get('id')
             title = self.request.form.get('title')
-            
+
             plugin = CSGooglePlusUsers(name, title)
             self.context.context[name] = plugin
-            
+
             self.request.response.redirect(self.context.absolute_url() +
                     '/manage_workspace?manage_tabs_message=Plugin+added.')
 
@@ -58,7 +58,7 @@ Here, we implement a number of PAS interfaces, using a session managed
 by Beaker (via collective.beaker) to temporarily store the values we
 have captured.
 """
-    
+
     # List PAS interfaces we implement here
     implements(
             ICSGooglePlusPlugin,
@@ -69,7 +69,7 @@ have captured.
             IUserEnumerationPlugin,
             IUserFactoryPlugin
         )
-    
+
     def __init__(self, id, title=None):
         self.__name__ = self.id = id
         self.title = title
@@ -86,33 +86,33 @@ o Return a mapping of any derived credentials.
 o Return an empty mapping to indicate that the plugin found no
 appropriate credentials.
 """
-        
+
         # Get the session from Beaker.
-        
+
         session = ISession(request, None)
-        
+
         if session is None:
             return None
-        
+
         # We have been authenticated and we have a session that has not yet
         # expired:
-        
+
         if SessionKeys.userId in session:
-            
+
             return {
                     'src': self.getId(),
                     'userid': session[SessionKeys.userId],
                     'username': session[SessionKeys.userId],
 
                 }
-        
+
         return None
-    
+
     #
     # IAuthenticationPlugin
     #
-    
-    
+
+
     def authenticateCredentials(self, credentials):
         """This method is called with the credentials that have been
 extracted by extractCredentials(), to determine whether the user is
@@ -127,26 +127,26 @@ o Return a tuple consisting of user ID (which may be different
 from the login name) and login
 o If the credentials cannot be authenticated, return None.
 """
-        
+
         # If we didn't extract, ignore
         if credentials.get('src', None) != self.getId():
             return
-        
+
         # We have a session, which was identified by extractCredentials above.
         # Trust that it extracted the correct user id and login name
-        
+
         if (
             'userid' in credentials and
             'username' in credentials
         ):
             return (credentials['userid'], credentials['username'],)
-        
+
         return None
-    
+
     #
     # ICredentialsResetPlugin
     #
-    
+
     def resetCredentials(self, request, response):
         """This method is called if the user logs out.
 Here, we simply destroy their session.
@@ -154,13 +154,13 @@ Here, we simply destroy their session.
         session = ISession(request, None)
         if session is None:
             return
-        
+
         session.delete()
-    
+
     #
     # IPropertiesPlugin
     #
-    
+
     def getPropertiesForUser(self, user, request=None):
         """This method is called whenever Plone needs to get properties for
 a user. We return a dictionary with properties that map to those
@@ -185,11 +185,11 @@ present
 
             return user_data
 
-   
+
     #
     # IUserEnumerationPlugin
     #
-    
+
     def enumerateUsers(self
                       , id=None
                       , login=None
@@ -230,7 +230,7 @@ o Plugin may raise ValueError for invalid criteria.
 o Insufficiently-specified criteria may have catastrophic
 scaling issues for some implementations.
 """
-        
+
         if exact_match:
             if id is not None:
                 user_data = self._storage.get(id, None)
@@ -259,5 +259,5 @@ scaling issues for some implementations.
         user_data = self._storage.get(user_id, None)
         if user_data is not None:
             return GooglePlusUser(user_id, name)
-        
+
         return None
