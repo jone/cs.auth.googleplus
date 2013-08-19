@@ -1,6 +1,6 @@
+from BTrees.OOBTree import OOBTree
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
-from BTrees.OOBTree import OOBTree
 
 from collective.beaker.interfaces import ISession
 
@@ -112,7 +112,6 @@ appropriate credentials.
     # IAuthenticationPlugin
     #
 
-
     def authenticateCredentials(self, credentials):
         """This method is called with the credentials that have been
 extracted by extractCredentials(), to determine whether the user is
@@ -185,19 +184,17 @@ present
 
             return user_data
 
-
     #
     # IUserEnumerationPlugin
     #
 
-    def enumerateUsers(self
-                      , id=None
-                      , login=None
-                      , exact_match=False
-                      , sort_by=None
-                      , max_results=None
-                      , **kw
-                      ):
+    def enumerateUsers(self,
+                       id=None,
+                       login=None,
+                       exact_match=False,
+                       sort_by=None,
+                       max_results=None,
+                       **kw):
         """This function is used to search for users.
 We don't implement a search of all of GooglePlus (!), but it's important
 that we allow Plone to search for the currently logged in user and get
