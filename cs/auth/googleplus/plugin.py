@@ -1,4 +1,5 @@
 from BTrees.OOBTree import OOBTree
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
 
@@ -37,9 +38,9 @@ class AddForm(BrowserView):
     """Add form the PAS plugin
 """
 
+    template = ViewPageTemplateFile('addform.pt')
+
     def __call__(self):
-        import pdb
-        pdb.set_trace()
 
         if 'form.button.Add' in self.request.form:
             name = self.request.form.get('id')
@@ -50,6 +51,8 @@ class AddForm(BrowserView):
 
             self.request.response.redirect(self.context.absolute_url() +
                     '/manage_workspace?manage_tabs_message=Plugin+added.')
+
+        return self.template()
 
 
 class CSGooglePlusUsers(BasePlugin):

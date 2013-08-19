@@ -3,6 +3,10 @@ import os
 
 version = '1.0'
 
+tests_require = [
+    'plone.app.testing',
+    ]
+
 setup(name='cs.auth.googleplus',
       version=version,
       description="Plone package to provide Google+ authentication",
@@ -29,6 +33,8 @@ setup(name='cs.auth.googleplus',
           'setuptools',
           # -*- Extra requirements: -*-
       ],
+      tests_require=tests_require,
+      extras_require=dict(tests=tests_require),
       entry_points="""
       # -*- Entry points: -*-
 

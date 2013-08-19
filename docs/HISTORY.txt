@@ -1,8 +1,18 @@
 Changelog
 =========
 
-1.0dev (16-05-2013)
--------------------
+1.1 (unreleased)
+----------------
+
+- Various code clean ups (trailing spaces, pep8/pylint)
+- Add Test setup
+- Add basic functional tests
+- Fix setup.py
+  [mathias.leimgruber]
+
+
+1.0 (16-05-2013)
+----------------
 
 - Initial release
   [basmaijak]
