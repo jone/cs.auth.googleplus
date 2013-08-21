@@ -106,11 +106,23 @@ view, with a code in the request.
         #Load the profile using the access token we just received
         accessToken = response.json()["access_token"]
 
+        def unicode_to_utf8(data):
+            if isinstance(data, unicode):
+                return data.encode('utf-8')
+            else:
+                return data
+
+        def dict_unicode_to_utf8(data):
+            new_data = {}
+            for key, value in data.items():
+                new_data[unicode_to_utf8(key)] = unicode_to_utf8(value)
+            return new_data
+
         profile = json.load(urllib.urlopen(
                 "%s?%s" % (
                     GOOGLEPLUS_PROFILE_URL,
                     urllib.urlencode({'access_token': accessToken}),)
-            ))
+            ), object_hook=dict_unicode_to_utf8)
 
         userId = profile.get('id')
         name = profile.get('name')

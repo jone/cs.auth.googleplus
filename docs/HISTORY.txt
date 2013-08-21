@@ -4,6 +4,9 @@ Changelog
 1.1 (unreleased)
 ----------------
 
+- Fix setting portrait by using utf-8.
+  [jone]
+
 - Various code clean ups (trailing spaces, pep8/pylint)
 - Add Test setup
 - Add basic functional tests
