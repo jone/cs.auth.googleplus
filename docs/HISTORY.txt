@@ -4,6 +4,9 @@ Changelog
 1.1 (unreleased)
 ----------------
 
+- Extend the enumeration plugin with filter functionality.
+  [mathias.leimgruber]
+
 - Create events on registration and login.
   [jone]
 
