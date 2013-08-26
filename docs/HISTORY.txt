@@ -4,6 +4,9 @@ Changelog
 1.1 (unreleased)
 ----------------
 
+- Create events on registration and login.
+  [jone]
+
 - Fix setting portrait by using utf-8.
   [jone]
 

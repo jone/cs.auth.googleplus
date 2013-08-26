@@ -1,18 +1,21 @@
 from cs.auth.googleplus import login as gplogin
 from cs.auth.googleplus.controlpanel import IGooglePlusLoginSettings
+from cs.auth.googleplus.interfaces import IGoogleUserLoggedInEvent
+from cs.auth.googleplus.interfaces import IGoogleUserRegisteredEvent
 from cs.auth.googleplus.testing import DUMMY_USER_PROFILE
 from cs.auth.googleplus.testing import GOOGLEPLUS_AUTH_FUNCTIONAL_TESTING
-from plone.app.testing import login
 from plone.app.testing import PLONE_SITE_ID
-from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import login
+from plone.app.testing import setRoles
 from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from unittest2 import TestCase
 from zope.component import getUtility
-import transaction
+from zope.component import provideHandler
 import os
+import transaction
 
 
 ORIG_AUTH = gplogin.GOOGLEPLUS_AUTH_URL
@@ -109,3 +112,22 @@ class TestGoogleLogin(TestCase):
 
         self.assertEquals(member.getProperty('email'),
                           DUMMY_USER_PROFILE['email'])
+
+    def test_events_are_fired_correctly(self):
+        fired_events = []
+        def google_user_event_handler(event):
+            fired_events.append((type(event).__name__, event.principal.getId()))
+        provideHandler(google_user_event_handler, [IGoogleUserRegisteredEvent])
+        provideHandler(google_user_event_handler, [IGoogleUserLoggedInEvent])
+
+        # login the first time -> expects IGoogleUserRegisteredEvent
+        self.login_user()
+        self.assertEquals([('GoogleUserRegisteredEvent', 'profileid')], fired_events)
+
+        # destroy browser and login second time -> expects IGoogleUserLoggedInEvent
+        self.browser = Browser(self.layer['app'])
+        self.browser.handleErrors = False
+        self.login_user()
+
+        self.assertEquals([('GoogleUserRegisteredEvent', 'profileid'),
+                           ('GoogleUserLoggedInEvent', 'profileid')], fired_events)

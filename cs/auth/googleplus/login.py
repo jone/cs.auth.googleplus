@@ -8,9 +8,13 @@ from plone.registry.interfaces import IRegistry
 from Products.PluggableAuthService.interfaces.plugins import IExtractionPlugin
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getUtility
+from zope.event import notify
 from zope.publisher.browser import BrowserView
 
+
 from cs.auth.googleplus import GOOGLEPLUSMessageFactory as _
+from cs.auth.googleplus.events import GoogleUserLoggedInEvent
+from cs.auth.googleplus.events import GoogleUserRegisteredEvent
 from cs.auth.googleplus.interfaces import ICSGooglePlusPlugin
 from cs.auth.googleplus.plugin import SessionKeys
 
@@ -149,6 +153,8 @@ view, with a code in the request.
 
         # Add user data into our plugin storage:
         acl = self.context.acl_users
+        initial_login = acl.getUserById(userId) is None
+
         acl_plugins = acl.plugins
         ids = acl_plugins.listPluginIds(IExtractionPlugin)
         for id in ids:
@@ -169,6 +175,12 @@ view, with a code in the request.
         if self.request.get('came_from', None) is not None:
             return_args = {'came_from': self.request.get('came_from')}
             return_args = '?' + urllib.urlencode(return_args)
+
+        user = acl.getUserById(userId)
+        if initial_login:
+            notify(GoogleUserRegisteredEvent(user, profile))
+        else:
+            notify(GoogleUserLoggedInEvent(user, profile))
 
         self.request.response.redirect(
             self.context.absolute_url() + '/logged_in' + return_args)
