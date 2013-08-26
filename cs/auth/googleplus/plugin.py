@@ -200,39 +200,8 @@ present
                        max_results=None,
                        **kw):
         """This function is used to search for users.
-We don't implement a search of all of GooglePlus (!), but it's important
-that we allow Plone to search for the currently logged in user and get
-a result back, so we effectively implement a search against only one
-value.
--> ( user_info_1, ... user_info_N )
-o Return mappings for users matching the given criteria.
-o 'id' or 'login', in combination with 'exact_match' true, will
-return at most one mapping per supplied ID ('id' and 'login'
-may be sequences).
-o If 'exact_match' is False, then 'id' and / or login may be
-treated by the plugin as "contains" searches (more complicated
-searches may be supported by some plugins using other keyword
-arguments).
-o If 'sort_by' is passed, the results will be sorted accordingly.
-known valid values are 'id' and 'login' (some plugins may support
-others).
-o If 'max_results' is specified, it must be a positive integer,
-limiting the number of returned mappings. If unspecified, the
-plugin should return mappings for all users satisfying the criteria.
-o Minimal keys in the returned mappings:
-'id' -- (required) the user ID, which may be different than
-the login name
-'login' -- (required) the login name
-'pluginid' -- (required) the plugin ID (as returned by getId())
-'editurl' -- (optional) the URL to a page for updating the
-mapping's user
-o Plugin *must* ignore unknown criteria.
-o Plugin may raise ValueError for invalid criteria.
-o Insufficiently-specified criteria may have catastrophic
-scaling issues for some implementations.
+It supports exact_match and partial search
 """
-
-        criterias = copy(kw)
 
         def match(data, criterias, exact_match=False):
             """Search for users with the given criterias"""
@@ -253,6 +222,18 @@ scaling issues for some implementations.
                         return False
             return True
 
+        if id is not None:
+            data = self._storage.get(id, None)
+            if data is not None:
+                return ({'id': id,
+                       'login': id,
+                       'title': data.get('fullname'),
+                       'email': data.get('email'),
+                       'pluginid': self.getId()}, )
+            else:
+                return ()
+
+        criterias = copy(kw)
         result = [(userid, data) for (userid, data) in self._storage.items()
                      if match(data, criterias, exact_match)]
 
