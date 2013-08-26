@@ -2,6 +2,7 @@ from BTrees.OOBTree import OOBTree
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
+from copy import copy
 
 from collective.beaker.interfaces import ISession
 
@@ -231,27 +232,38 @@ o Insufficiently-specified criteria may have catastrophic
 scaling issues for some implementations.
 """
 
-        if exact_match:
-            if id is not None:
-                user_data = self._storage.get(id, None)
-                if user_data is not None:
-                    return ({
-                             'id': id,
-                             'login': id,
-                             'pluginid': self.getId(),
-                         },)
-            return ()
+        criterias = copy(kw)
 
-        else:
-            # XXX: return all users, without any matching
-            data = []
-            for id, user_data in self._storage.items():
-                data.append({
-                         'id': id,
-                         'login': id,
-                         'pluginid': self.getId(),
-                    })
-            return data
+        def match(data, criterias, exact_match=False):
+            """Search for users with the given criterias"""
+            for propertyname, searchstring in criterias.items():
+                stored_value = data.get(propertyname, None)
+                if stored_value is None:
+                    return False
+
+                if isinstance(stored_value, unicode):
+                    stored_value = stored_value.decode('utf-8')
+                if isinstance(searchstring, unicode):
+                    searchstring = searchstring.decode('utf-8')
+
+                if exact_match and searchstring != stored_value:
+                    return False
+                else:
+                    if searchstring not in stored_value:
+                        return False
+            return True
+
+        result = [(userid, data) for (userid, data) in self._storage.items()
+                     if match(data, criterias, exact_match)]
+
+        return tuple(
+            [{'id': user_id,
+              'login': user_id,
+              'title': data.get('fullname'),
+              'email': data.get('email'),
+              'pluginid': self.getId()
+            } for (user_id, data) in result])
+
 
     # IUserFactoryPlugin interface
     def createUser(self, user_id, name):

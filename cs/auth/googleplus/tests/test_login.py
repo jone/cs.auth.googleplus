@@ -92,12 +92,49 @@ class TestGoogleLogin(TestCase):
 
         self.assertIsNotNone(member,
             'Did not found the member with username: %s' % id_)
+        self.assertEquals(member.getId(), DUMMY_USER_PROFILE['id'])
 
     def test_enumerate_list_all(self):
         self.login_user()
         mtool = self.portal.portal_membership
 
         self.assertEquals(1, len(mtool.listMembers()), 'Expect one entry')
+
+    def test_enumerate_user_email_exact_match(self):
+        self.login_user()
+
+        pas_search = self.portal.restrictedTraverse('@@pas_search')
+        users = pas_search.searchUsers(email=DUMMY_USER_PROFILE['email'],
+                                       exact_match=True)
+
+        self.assertEquals(1, len(users), 'There should be one user')
+
+    def test_enumerate_user_email_NOT_match(self):
+        self.login_user()
+
+        pas_search = self.portal.restrictedTraverse('@@pas_search')
+        users = pas_search.searchUsers(email='donotmatch',
+                                       exact_match=True)
+
+        self.assertEquals(0, len(users), 'Expect no user in the result.')
+
+    def test_enumerate_user_email_NOT_exact_match(self):
+        self.login_user()
+
+        pas_search = self.portal.restrictedTraverse('@@pas_search')
+        users = pas_search.searchUsers(email='donotmatch',
+                                       exact_match=False)
+
+        self.assertEquals(0, len(users), 'Expect no user in the result.')
+
+    def test_enumerate_user_email_partialy_match(self):
+        self.login_user()
+
+        pas_search = self.portal.restrictedTraverse('@@pas_search')
+        users = pas_search.searchUsers(email='@email',
+                                       exact_match=False)
+
+        self.assertEquals(1, len(users), 'Expect no user in the result.')
 
     def test_properties_for_user(self):
         self.login_user()
