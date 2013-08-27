@@ -1,55 +1,51 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2013-08-27 13:11+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2013-08-27 13:11+0000\n"
+"Last-Translator: Jonas Baumann <jone@jone.ch>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"Language-Code: en\n"
-"Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: cs.auth.googleplus\n"
 
 #: ./cs/auth/googleplus/login.py:72
 msgid "GOOGLEPLUS authentication denied"
-msgstr ""
+msgstr "Google+ Anmeldung abgelehnt"
 
 #: ./cs/auth/googleplus/profiles/default/controlpanel.xml
 msgid "Google+ login Settings"
-msgstr ""
+msgstr "Google+ Login Einstellungen"
 
 #: ./cs/auth/googleplus/controlpanel.py:13
 msgid "GooglePlus Client ID"
-msgstr ""
+msgstr "Google+ Client ID"
 
 #: ./cs/auth/googleplus/controlpanel.py:18
 msgid "GooglePlus Client Secret"
-msgstr ""
+msgstr "Google+ Client Secret"
 
 #: ./cs/auth/googleplus/controlpanel.py:29
 msgid "GooglePlus Login settings"
-msgstr ""
+msgstr "Google+ Login Einstellungen"
 
 #: ./cs/auth/googleplus/login.py:81
 msgid "GooglePlus authentication denied"
-msgstr ""
+msgstr "Google+ Anmeldung abgelehnt"
 
 #: ./cs/auth/googleplus/login.py:140
 msgid "Insufficient information in GooglePlus profile"
-msgstr ""
+msgstr "Ungenügende Google+ Profil-Informationen"
 
 #: ./cs/auth/googleplus/profiles/default/actions.xml
 msgid "Log in with Google+"
-msgstr ""
+msgstr "Anmelden mit Google+"
 
 #: ./cs/auth/googleplus/controlpanel.py:14
 msgid "The App ID/API Key you got when creating the app at https://developers.google.com/+/"
-msgstr ""
+msgstr "Die App ID / der API Key, den Sie beim Erstellen der App auf https://developers.google.com/+/ erhalten."
 
 #: ./cs/auth/googleplus/controlpanel.py:19
 msgid "The App Secret Key you got when creating the app athttps://developers.google.com/+/"
-msgstr ""
+msgstr "Der App Secret Key, den Sie beim erstellen der App auf https://developers.google.com/+/ erhalten."
