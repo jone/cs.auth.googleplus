@@ -49,7 +49,3 @@ msgstr ""
 #: ./controlpanel.py:13
 msgid "The App Secret Key you got when creating the app at https://developers.google.com/+/"
 msgstr ""
-
-#: ./login.py:142
-msgid "Welcome. You are now logged in."
-msgstr ""

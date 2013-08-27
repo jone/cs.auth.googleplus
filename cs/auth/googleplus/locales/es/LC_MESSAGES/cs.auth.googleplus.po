@@ -51,6 +51,3 @@ msgstr "El 'App ID/API Key' de su aplicación Google+. Cree una aplicación en h
 msgid "The App Secret Key you got when creating the app at https://developers.google.com/+/"
 msgstr "El 'App Secret Key' de su aplicación Google+. Cree una aplicación en https://developers.google.com/+/"
 
-#: ./login.py:142
-msgid "Welcome. You are now logged in."
-msgstr "Bienvenido. Ha accedido al sistema correctamente."

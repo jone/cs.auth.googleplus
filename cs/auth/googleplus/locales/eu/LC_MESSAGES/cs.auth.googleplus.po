@@ -51,6 +51,3 @@ msgstr "Google+ aplikazioaren 'App ID/API Key' delakoa. Sortu aplikazioa https:/
 msgid "The App Secret Key you got when creating the app at https://developers.google.com/+/"
 msgstr "Google+ aplikazioaren 'App Secret Key' delakoa. Sortu aplikazioa https://developers.google.com/+/ helbidean."
 
-#: ./login.py:142
-msgid "Welcome. You are now logged in."
-msgstr "Ongi etorri. Ondo sartu zara."

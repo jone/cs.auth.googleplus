@@ -4,6 +4,9 @@ Changelog
 1.1 (unreleased)
 ----------------
 
+- Use Plone default translation for logged-in message.
+  [jone]
+
 - Extend the enumeration plugin with filter functionality.
   [mathias.leimgruber]
 
