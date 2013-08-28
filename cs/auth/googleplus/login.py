@@ -5,6 +5,7 @@ import urllib
 
 from collective.beaker.interfaces import ISession
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone import PloneMessageFactory as pmf
 from Products.PluggableAuthService.interfaces.plugins import IExtractionPlugin
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getUtility
@@ -168,7 +169,7 @@ view, with a code in the request.
                 plugin._storage[session[SessionKeys.userId]] = user_data
 
         IStatusMessage(self.request).add(
-            _(u"Welcome. You are now logged in."),
+            pmf(u"Welcome! You are now logged in."),
             type="info")
 
         return_args = ''
