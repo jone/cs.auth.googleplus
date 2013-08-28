@@ -222,11 +222,13 @@ It supports exact_match and partial search
                         return False
             return True
 
-        if id is not None:
-            data = self._storage.get(id, None)
+        if id is not None or login is not None:
+            # No diffrents between id and login
+            name = id or login
+            data = self._storage.get(name, None)
             if data is not None:
-                return ({'id': id,
-                       'login': id,
+                return ({'id': name,
+                       'login': name,
                        'title': data.get('fullname'),
                        'email': data.get('email'),
                        'pluginid': self.getId()}, )
