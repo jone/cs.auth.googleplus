@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.1ftw.dev0'
+version = '1.1ftw'
 
 tests_require = [
     'plone.app.testing',
