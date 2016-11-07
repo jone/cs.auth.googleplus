@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1 (unreleased)
-----------------
+1.1-ftw (2016-11-07)
+--------------------
 
 - Fix user enumeration if login parameter passed.
   [mathias.leimgruber]
